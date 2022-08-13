@@ -18,7 +18,7 @@ model User {
   name      String
   email     String      @unique
   hash      String
-  MovieList MovieList[]
+  movieList MovieList[]
 }
 
 model MovieList {
