@@ -1,13 +1,16 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator';
 import { BaseSchema } from 'src/common/dto';
 
-import { UserDto } from './dto/user.dto';
+import { UpdateUserInput, UpdateUserResponse, UserDto } from './dto/user.dto';
+import { UserService } from './user.service';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
+  constructor(private user: UserService) {}
+
   @Get('me')
   @ApiOkResponse({
     schema: BaseSchema(UserDto),
@@ -18,5 +21,13 @@ export class UserController {
       message: 'OK',
       content: user,
     };
+  }
+
+  @Patch()
+  @ApiOkResponse({
+    type: UpdateUserResponse,
+  })
+  updateUser(@Body() body: UpdateUserInput) {
+    return this.user.updateUser(body);
   }
 }

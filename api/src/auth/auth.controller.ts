@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
@@ -6,11 +13,20 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BaseResponseDto, BaseSchema, ErrorResponseDto } from 'src/common/dto';
-import { UserDto } from 'src/user/dto/user.dto';
+import {
+  UpdateUserInput,
+  UpdateUserResponse,
+  UserDto,
+} from 'src/user/dto/user.dto';
 
 import { AuthService } from './auth.service';
 import { Public } from './decorator';
-import { SignInInput, SignInResponse, SignUpInputDto } from './dto/auth.dto';
+import {
+  ChangeUserPasswordInput,
+  SignInInput,
+  SignInResponse,
+  SignUpInputDto,
+} from './dto/auth.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -40,5 +56,13 @@ export class AuthController {
   })
   signUp(@Body() body: SignUpInputDto) {
     return this.auth.signUp(body);
+  }
+
+  @Patch('change-password')
+  @ApiOkResponse({
+    type: UpdateUserResponse,
+  })
+  changePassword(@Body() body: ChangeUserPasswordInput) {
+    return this.auth.changePassword(body);
   }
 }
