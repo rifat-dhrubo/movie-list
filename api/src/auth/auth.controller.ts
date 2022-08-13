@@ -6,18 +6,9 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import {
-  ApiBadRequestResponse,
-  ApiOkResponse,
-  ApiTags,
-  getSchemaPath,
-} from '@nestjs/swagger';
-import { BaseResponseDto, BaseSchema, ErrorResponseDto } from 'src/common/dto';
-import {
-  UpdateUserInput,
-  UpdateUserResponse,
-  UserDto,
-} from 'src/user/dto/user.dto';
+import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { BaseResponseDto, ErrorResponseDto } from 'src/common/dto';
+import { UpdateUserResponse } from 'src/user/dto/user.dto';
 
 import { AuthService } from './auth.service';
 import { Public } from './decorator';
