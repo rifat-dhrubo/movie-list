@@ -2,8 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
+  provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/client"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -36,4 +37,7 @@ model Movie {
   imdbLink    String?
   imageLink   String?
   watchLink   String?
+
+  @@unique([title, userId])
+  @@unique([id, userId])
 }

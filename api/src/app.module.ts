@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from './auth/auth.module';
-import { MovieListModule } from './movie-list/movie-list.module';
+import { MovieModule } from './movie/movie.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 
@@ -11,11 +11,10 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
     AuthModule,
     UserModule,
-    MovieListModule,
     PrismaModule,
+    MovieModule,
   ],
 })
 export class AppModule {}
