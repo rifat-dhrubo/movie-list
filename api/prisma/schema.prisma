@@ -12,25 +12,28 @@ datasource db {
 }
 
 model User {
-  id        Int         @id @default(autoincrement())
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   name      String
-  email     String      @unique
+  email     String   @unique
   hash      String
-  movieList MovieList[]
+  movieList Movie[]
 }
 
-model MovieList {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String
+model Movie {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title  String
+  rating Int
+
   description String?
   imdbLink    String?
   imageLink   String?
-  rating      Int
   watchLink   String?
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
