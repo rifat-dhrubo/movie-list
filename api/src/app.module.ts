@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
     AuthModule,
     UserModule,
     MovieListModule,
