@@ -1,11 +1,20 @@
-import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-import { SignUpInputDto, SignInInput } from './dto/auth.dto';
+import {
+  SignUpInputDto,
+  SignInInput,
+  ChangeUserPasswordInput,
+} from './dto/auth.dto';
 const SALT_ROUNDS = 10;
 @Injectable()
 export class AuthService {
@@ -73,5 +82,50 @@ export class AuthService {
       secret: this.config.get('JWT_SECRET'),
       expiresIn: '5h',
     });
+  }
+
+  async changePassword({
+    userId,
+    currentPassword,
+    newPassword,
+    confirmPassword,
+  }: ChangeUserPasswordInput) {
+    if (confirmPassword !== newPassword) {
+      throw new BadRequestException(
+        'New password must be same as current password',
+      );
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    const passwordMatches = await bcrypt.compare(currentPassword, user.hash);
+    if (!passwordMatches) {
+      throw new ForbiddenException('Invalid credentials');
+    }
+
+    const hash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+
+    const updatedUser = await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        hash,
+      },
+    });
+
+    return {
+      status: HttpStatus.OK,
+      message: 'OK',
+      content: updatedUser,
+    };
   }
 }
