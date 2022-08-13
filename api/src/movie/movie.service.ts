@@ -9,6 +9,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { MoviePaginationEntities } from './dto/movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Injectable()
@@ -39,12 +40,56 @@ export class MovieService {
     }
   }
 
-  search() {
-    return `This action returns all movie searched and paginated`;
+  async search(query: MoviePaginationEntities) {
+    const [total, movie] = await Promise.all([
+      this.prisma.movie.count({
+        where: {
+          title: {
+            search: query.search,
+          },
+        },
+      }),
+      this.prisma.movie.findMany({
+        take: query.size,
+        skip: query.page * query.size,
+        where: {
+          title: {
+            search: query.search,
+          },
+        },
+        orderBy: {
+          [query.sortBy]: query.sortOrder,
+        },
+      }),
+    ]);
+    const lastPage = Math.ceil(total / query.size) - 1;
+    return {
+      status: HttpStatus.OK,
+      message: 'Search successfull',
+      content: movie,
+      meta: {
+        total,
+        lastPage,
+        currentPage: query.page,
+        size: query.size,
+        prev: query.page > 1 ? query.page - 1 : null,
+        next: query.page < lastPage ? query.page + 1 : null,
+      },
+    };
   }
 
   async findOne(id: number, userId: number) {
-    const movie = await this.findUniqueOrThrow(id, userId);
+    const movie = await this.prisma.movie.findUnique({
+      where: {
+        id_userId: {
+          id,
+          userId: userId,
+        },
+      },
+    });
+    if (!movie) {
+      throw new NotFoundException('Movie does not exist');
+    }
 
     return {
       status: HttpStatus.OK,
@@ -104,20 +149,5 @@ export class MovieService {
       status: HttpStatus.OK,
       message: 'Movie deleted successfully',
     };
-  }
-
-  async findUniqueOrThrow(id: number, userId: number) {
-    const movie = await this.prisma.movie.findUnique({
-      where: {
-        id_userId: {
-          id,
-          userId: userId,
-        },
-      },
-    });
-    if (!movie) {
-      throw new NotFoundException('Movie does not exist');
-    }
-    return movie;
   }
 }

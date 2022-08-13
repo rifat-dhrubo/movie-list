@@ -8,20 +8,24 @@ import {
   Delete,
   ParseIntPipe,
   Query,
-  Put,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiExtraModels,
   ApiOkResponse,
   ApiTags,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator';
 import { BaseResponseDto, BaseSchema } from 'src/common/dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 import { CreateMovieDto } from './dto/create-movie.dto';
-import { GetMovieByIdResponse, MovieDto } from './dto/movie.dto';
+import {
+  GetMovieByIdResponse,
+  MovieDto,
+  MoviePaginationEntities,
+  MoviePaginationMeta,
+} from './dto/movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieService } from './movie.service';
 
@@ -40,8 +44,26 @@ export class MovieController {
   }
 
   @Get('search')
-  search() {
-    return this.movieService.search();
+  @ApiOkResponse({
+    schema: {
+      allOf: [{ $ref: getSchemaPath(BaseResponseDto) }],
+
+      properties: {
+        content: {
+          type: 'array',
+          items: {
+            $ref: getSchemaPath(MovieDto),
+          },
+        },
+        meta: {
+          $ref: getSchemaPath(MoviePaginationMeta),
+        },
+      },
+    },
+  })
+  @ApiExtraModels(MoviePaginationMeta)
+  search(@Query() query: MoviePaginationEntities) {
+    return this.movieService.search(query);
   }
 
   @Get(':id')

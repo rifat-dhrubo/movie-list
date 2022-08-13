@@ -1,7 +1,9 @@
-import { OmitType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import {
+  IsEnum,
   IsInt,
   IsOptional,
+  IsString,
   IsUrl,
   Length,
   Max,
@@ -46,3 +48,36 @@ export class MovieDto {
 export class GetMovieByIdResponse extends OmitType(MovieDto, [
   'user',
 ] as const) {}
+
+export class MoviePaginationEntities {
+  @IsString()
+  @IsOptional()
+  search?: string;
+
+  @IsInt()
+  @IsOptional()
+  page?: number = 0;
+
+  @IsInt()
+  @IsOptional()
+  size?: number = 10;
+
+  @IsEnum(['createdAt', 'updatedAt', 'title', 'rating'])
+  @IsOptional()
+  @ApiProperty({ enum: ['createdAt', 'updatedAt', 'title', 'rating'] })
+  sortBy?: 'createdAt' | 'updatedAt' | 'title' | 'rating' = 'updatedAt';
+
+  @IsEnum(['asc', 'desc'])
+  @IsOptional()
+  @ApiProperty({ enum: ['asc', 'desc'] })
+  sortOrder?: 'asc' | 'desc' = 'desc';
+}
+
+export class MoviePaginationMeta {
+  total: number;
+  lastPage: number;
+  currentPage: number;
+  size: number;
+  prev: number | null;
+  next: number | null;
+}
