@@ -36,4 +36,7 @@ model Movie {
   imdbLink    String?
   imageLink   String?
   watchLink   String?
+
+  @@unique([title, userId])
+  @@unique([id, userId])
 }
