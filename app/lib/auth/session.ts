@@ -7,17 +7,17 @@ import {
   GetServerSidePropsResult,
 } from "next";
 
+import { SignInResponse } from "types/auth.type";
+
 const fiveHoursInSeconds = 5 * 60 * 60;
 /**
  * Type of session data you want to store in the session.
  */
-export type AuthProps = {
-  token: string;
-};
+export interface AuthProps extends SignInResponse {}
 
 export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
-  cookieName: "merchaint-v1",
+  cookieName: "movie-app",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
   },

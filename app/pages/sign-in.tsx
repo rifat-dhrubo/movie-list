@@ -11,12 +11,11 @@ import { z } from "zod";
 import Button from "components/Button.tsx/Button";
 import FormInput from "components/FormInput/FormInput";
 import Navbar from "components/Navbar/Navbar";
-import { sessionLogin, signInApi, signUpApi } from "services/auth";
+import { sessionLogin, signInApi } from "services/auth";
 
 import { ROUTES } from "../utils/routes";
 
 const signInSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Email is invalid"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
@@ -32,28 +31,47 @@ const SignIn = () => {
     resolver: zodResolver(signInSchema),
   });
   const router = useRouter();
+  const { redirect } = router.query;
 
-  const { api } = signUpApi();
+  const { mutateAsync: sessionLoginMutation } = useMutation(sessionLogin, {
+    onSuccess: () => {
+      if (redirect != null && typeof redirect === "string") {
+        router.push(redirect);
+        return;
+      }
+      router.push(ROUTES.MOVIE);
+    },
+  });
+  const { api } = signInApi();
   const { mutateAsync } = useMutation(api, {
     onSuccess: (data) => {
-      router.push(ROUTES.SIGN_IN);
+      toast.promise(
+        sessionLoginMutation(data),
+        {
+          loading: `Logging in ${data.user.name}`,
+          success: `Logged in ${data.user.name}`,
+          error: `Failed to login ${data.user.name}`,
+        },
+        {
+          id: "session_login",
+        }
+      );
     },
   });
 
   const onSubmit = (data: SignInForm) => {
     toast.promise(
       mutateAsync({
-        name: data.name,
         email: data.email,
         password: data.password,
       }),
       {
-        loading: "Creating Account",
-        success: "Account creation successful",
-        error: "Account creation failed",
+        loading: "Verifying credentials...",
+        success: "Verification successful!",
+        error: "Verification failed !!",
       },
       {
-        id: "signUp",
+        id: "login",
       }
     );
   };
@@ -65,39 +83,21 @@ const SignIn = () => {
         <main className="w-full max-w-md px-12 mx-auto -mt-24 bg-white border shadow rounded-2xl border-grey-200 py-14">
           <header className="text-center">
             <h3 className="text-lg font-medium text-black">
-              Create an account
+              Sign in to your account
             </h3>
             <p className="mt-3 text-base font-medium text-slate-700">
-              Already have an account?{" "}
-              <Link href={ROUTES.SIGN_IN} passHref>
-                <a className="text-purple-700">Sign in</a>
+              Don&apos;t have an account?{" "}
+              <Link href={ROUTES.SIGN_UP} passHref>
+                <a className="text-purple-700">Create an account</a>
               </Link>
             </p>
           </header>
           <form
-            id="sign-up-form"
+            id="sign-in-form"
             className="space-y-3 mt-[3.25rem]"
             onSubmit={handleSubmit(onSubmit)}
             noValidate
           >
-            <FormInput
-              name="name"
-              error={errors.name ? true : false}
-              errorMessage={errors.name?.message}
-              labelText="Name"
-            >
-              <input
-                className={classNames(
-                  "input",
-                  errors.name ? "input__error" : "input__base"
-                )}
-                type="text"
-                id="name"
-                autoComplete="name"
-                {...register("name")}
-                aria-describedby="name-error"
-              />
-            </FormInput>
             <FormInput
               name="email"
               error={errors.email ? true : false}
@@ -136,7 +136,7 @@ const SignIn = () => {
             </FormInput>
           </form>
           <Button
-            form="sign-up-form"
+            form="sign-in-form"
             type="submit"
             className="justify-center w-full mt-12 text-center"
             size="xl"

@@ -5,14 +5,14 @@ type BaseProps = {};
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "white";
   children: React.ReactNode;
-  size?: "xs" | "sm" | "base" | "md" | "lg";
+  size?: "xs" | "sm" | "base" | "md" | "lg" | "xl";
 }
 
 interface LinkButtonProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   variant?: "primary" | "secondary" | "white";
   children: React.ReactNode;
-  size?: "xs" | "sm" | "base" | "md" | "lg";
+  size?: "xs" | "sm" | "base" | "md" | "lg" | "xl";
 }
 
 const baseClass =
@@ -44,6 +44,7 @@ const Button = ({
       "px-3 py-2 text-sm leading-5 font-medium base": size === "base",
       "px-3 py-2 text-base leading-6 font-medium md": size === "md",
       "px-3 py-2 text-base leading-6 font-medium lg": size === "lg",
+      "px-3 py-3 text-lg leading-6 font-medium lg": size === "xl",
     },
     className
   );

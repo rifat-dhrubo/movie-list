@@ -1,8 +1,14 @@
 import { MenuButton, MenuList, MenuItem, Menu } from "@reach/menu-button";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import toast from "react-hot-toast";
 import { HiDotsHorizontal, HiOutlineUserCircle } from "react-icons/hi";
+
+import { getSessionInfo, sessionLogout } from "services/auth";
+import { ROUTES } from "utils/routes";
 
 const Navbar = () => {
   return (
@@ -23,6 +29,23 @@ const Navbar = () => {
 };
 
 export const SignedInNavbar = () => {
+  const { api, getKey } = getSessionInfo();
+  const { data } = useQuery(getKey(), api);
+  const { mutateAsync } = useMutation(sessionLogout, {
+    onSuccess: () => {
+      router.push(ROUTES.SIGN_IN);
+    },
+  });
+  const router = useRouter();
+
+  const handleLogOut = () => {
+    toast.promise(mutateAsync(), {
+      loading: "Logging out...",
+      success: "Logged out successfully",
+      error: "Error logging out",
+    });
+  };
+
   return (
     <>
       <Head>
@@ -55,21 +78,18 @@ export const SignedInNavbar = () => {
             aria-labelledby="menu-0-button"
             tabIndex={-1}
           >
-            <div className="py-1" role="none">
+            {/* <div className="py-1" role="none">
               <MenuItem
-                as={Link}
+                as="button"
                 role="menuitem"
                 tabIndex={-1}
                 id="menu-0-item-0"
-                href="/profile"
-                onSelect={() => {}}
-                passHref
+                className="block w-full px-4 py-2 text-base text-left text-gray-700"
+                onSelect={() => router.push(ROUTES.PROFILE)}
               >
-                <a className="block w-full px-4 py-2 text-base text-gray-700 hover:bg-[#ebeef5] ">
-                  Profile
-                </a>
+                Profile
               </MenuItem>
-            </div>
+            </div> */}
             <div className="py-1" role="none">
               <MenuItem
                 as="button"
@@ -77,7 +97,7 @@ export const SignedInNavbar = () => {
                 role="menuitem"
                 tabIndex={-1}
                 id="menu-0-item-1"
-                onSelect={() => {}}
+                onSelect={handleLogOut}
               >
                 Log out
               </MenuItem>
