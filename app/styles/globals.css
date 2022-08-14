@@ -32,7 +32,14 @@
 }
 
 @layer components {
-	.btn {
-		@apply inline-flex justify-center items-center px-12 cursor-pointer py-3 text-lg bg-indigo-500 text-slate-700 rounded font-bold focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-indigo-500 transition-all transform;
+	.input {
+		@apply block w-full rounded-md shadow-sm focus:outline-none sm:text-sm;
+	}
+
+	.input__base {
+		@apply border-slate-300 focus:ring-purple-500 focus:border-purple-500 text-slate-700 placeholder-slate-500;
+	}
+	.input__error {
+		@apply pr-10 text-red-900 placeholder-red-300 border-red-300 focus:ring-red-500 focus:border-red-500;
 	}
 }
