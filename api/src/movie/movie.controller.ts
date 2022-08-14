@@ -43,11 +43,28 @@ export class MovieController {
     return this.movieService.create(createMovieDto, userId);
   }
 
+  @Get()
+  @ApiCreatedResponse({
+    schema: {
+      allOf: [{ $ref: getSchemaPath(BaseResponseDto) }],
+      properties: {
+        content: {
+          type: 'array',
+          items: {
+            $ref: getSchemaPath(MovieDto),
+          },
+        },
+      },
+    },
+  })
+  findAll(@GetUser('id') userId: number) {
+    return this.movieService.findAll(userId);
+  }
+
   @Get('search')
   @ApiOkResponse({
     schema: {
       allOf: [{ $ref: getSchemaPath(BaseResponseDto) }],
-
       properties: {
         content: {
           type: 'array',
@@ -62,8 +79,11 @@ export class MovieController {
     },
   })
   @ApiExtraModels(MoviePaginationMeta)
-  search(@Query() query: MoviePaginationEntities) {
-    return this.movieService.search(query);
+  search(
+    @Query() query: MoviePaginationEntities,
+    @GetUser('id') userId: number,
+  ) {
+    return this.movieService.search(query, userId);
   }
 
   @Get(':id')

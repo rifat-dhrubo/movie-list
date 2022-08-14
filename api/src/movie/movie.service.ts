@@ -40,13 +40,14 @@ export class MovieService {
     }
   }
 
-  async search(query: MoviePaginationEntities) {
+  async search(query: MoviePaginationEntities, userId: number) {
     const [total, movie] = await Promise.all([
       this.prisma.movie.count({
         where: {
           title: {
             search: query.search,
           },
+          userId,
         },
       }),
       this.prisma.movie.findMany({
@@ -56,6 +57,7 @@ export class MovieService {
           title: {
             search: query.search,
           },
+          userId,
         },
         orderBy: {
           [query.sortBy]: query.sortOrder,
@@ -65,7 +67,7 @@ export class MovieService {
     const lastPage = Math.ceil(total / query.size) - 1;
     return {
       status: HttpStatus.OK,
-      message: 'Search successfull',
+      message: 'Search successful',
       content: movie,
       meta: {
         total,
@@ -90,6 +92,19 @@ export class MovieService {
     if (!movie) {
       throw new NotFoundException('Movie does not exist');
     }
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Movie found successfully',
+      content: movie,
+    };
+  }
+  async findAll(userId: number) {
+    const movie = await this.prisma.movie.findMany({
+      where: {
+        userId,
+      },
+    });
 
     return {
       status: HttpStatus.OK,
