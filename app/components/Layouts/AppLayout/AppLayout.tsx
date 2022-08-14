@@ -1,24 +1,25 @@
+import Head from "next/head";
 import React from "react";
 
-import CustomHead from "components/CustomHead";
+import Navbar, { SignedInNavbar } from "components/Navbar/Navbar";
 
 type Props = {
   children: React.ReactNode;
   title: string;
+  type: "signedOut" | "signedIn";
 };
 
-const AppLayout = ({ children, title }: Props) => {
+const AppLayout = ({ children, title, type = "signedOut" }: Props) => {
   return (
-    <div>
-      <CustomHead />
-      <div>
-        <div className="flex h-screen overflow-hidden bg-white">
-          <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-merchaint-grey-100">
-            <h1>This is a demo layout. Please customize</h1>
-            <main className="relative">{children}</main>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-white">
+      <Head>
+        <title>Movie Mania</title>
+        <meta name="description" content="A delightful online movie platform" />
+      </Head>
+      <>
+        {type === "signedOut" ? <Navbar /> : <SignedInNavbar />}
+        {children}
+      </>
     </div>
   );
 };

@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*,
+::before,
+::after {
+	font-family: 'Montserrat', sans-serif;
+}
+@keyframes slide-down {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	.slide-down[data-reach-menu-list],
+	.slide-down[data-reach-menu-items] {
+		animation: slide-down 0.2s ease;
+	}
+}
+
+[data-reach-menu-item][data-selected] {
+	background: #ebeef5;
+}
+[data-reach-combobox-option][data-highlighted] {
+	background: #ebeef5;
+}
+
+@layer components {
+	.btn {
+		@apply inline-flex justify-center items-center px-12 cursor-pointer py-3 text-lg bg-indigo-500 text-slate-700 rounded font-bold focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-indigo-500 transition-all transform;
+	}
+}
