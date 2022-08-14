@@ -1,8 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import Router from "next/router";
 import { useEffect } from "react";
-import { useQuery } from "react-query";
 
-import { getSessionUser } from "services/auth";
+import { getSessionInfo } from "services/auth";
 import { ROUTES } from "utils/routes";
 
 /**
@@ -15,7 +15,7 @@ export default function useUser({
   redirectTo = ROUTES.SIGN_IN,
   redirectIfFound = false,
 } = {}) {
-  const { api, getKey } = getSessionUser();
+  const { api, getKey } = getSessionInfo();
   const { data: user } = useQuery(getKey(), api);
 
   useEffect(() => {

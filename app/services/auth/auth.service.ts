@@ -25,7 +25,7 @@ export const signInApi = () => {
   return {
     api(data: SignInInput) {
       return axios
-        .post<SignInResponse>(`${API_URL}/auth/sign-up`, data)
+        .post<SignInResponse>(`${API_URL}/auth/sign-in`, data)
         .then(({ data }) => data);
     },
   };
@@ -50,3 +50,9 @@ export const changePasswordApi = () => {
     },
   };
 };
+
+export const sessionLogin = (input: SignInResponse) =>
+  axios.post<SignInResponse>("/api/login", input).then((res) => res.data);
+
+export const sessionLogout = () =>
+  axios.post<{}>("/api/logout").then((res) => res.data);
