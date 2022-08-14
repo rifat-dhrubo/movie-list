@@ -1,11 +1,9 @@
-/**
- * This is just an example please use your own route definitions
- */
 export const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
   SIGN_UP: "/sign-up",
-  MOVIE: "/movie",
-  MOVIE_DETAILS: (id: string) => `/movie/${id}`,
+  MOVIES: "/movies",
+  MOVIE_EDIT: (id: number) => `/movies/edit/${id}`,
+  MOVIE_DETAILS: (id: number) => `/movies/${id}`,
   PROFILE: "/profile",
-};
+} as const;

@@ -17,7 +17,8 @@ const Navbar = () => {
         <title>Movie Mania</title>
         <meta name="description" content="A delightful online quiz platform" />
       </Head>
-      <nav className="flex justify-start w-full px-12 py-4 bg-baseColor">
+
+      <nav className="flex justify-start w-full px-12 py-4 bg-transparent ">
         <Link passHref href="/">
           <a className="text-lg font-bold sm:text-xl text-secondary">
             Movie Mania
@@ -52,7 +53,8 @@ export const SignedInNavbar = () => {
         <title>Movie Mania</title>
         <meta name="description" content="A delightful online movie platform" />
       </Head>
-      <nav className="flex items-center justify-between w-full px-12 py-4 bg-white">
+
+      <nav className="flex items-center justify-between w-full px-12 py-4 ">
         <Link passHref href="/">
           <a className="text-lg font-bold sm:text-xl text-secondary text-slate-700">
             Movie Mania

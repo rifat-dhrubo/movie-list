@@ -4,6 +4,7 @@ import { API_URL } from "environment";
 import {
   DeleteMovieResponse,
   GetAllMovieResponse,
+  GetMovieByIdResponse,
   MovieSearchInput,
   MovieSearchResponse,
 } from "types/movie.type";
@@ -81,16 +82,26 @@ export const movieSearch = (token: string, query: MovieSearchInput) => {
   return {
     api() {
       return axios
-        .get<MovieSearchResponse>(`${API_URL}/movie?${params.toString()}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get<MovieSearchResponse>(
+          `${API_URL}/movie/search?${params.toString()}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then(({ data }) => data);
     },
 
     getKey() {
-      return ["movieSearch", params.toString()];
+      return [
+        "movieSearch",
+        query.page ? query.page : null,
+        query.size ? query.size : null,
+        query.search ? query.search : null,
+        query.sortBy ? query.sortBy : null,
+        query.sortOrder ? query.sortOrder : null,
+      ];
     },
   };
 };
@@ -99,7 +110,7 @@ export const getMovie = (token: string, id: string) => {
   return {
     api() {
       return axios
-        .get<GetAllMovieResponse>(`${API_URL}/movie/${id}`, {
+        .get<GetMovieByIdResponse>(`${API_URL}/movie/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -1,4 +1,4 @@
-import { operations } from "generated/server.type";
+import { components, operations } from "generated/server.type";
 
 export type CreateMovieInput =
   operations["MovieController_create"]["responses"]["201"]["content"]["application/json"];
@@ -20,3 +20,5 @@ export type GetMovieByIdResponse =
 
 export type DeleteMovieResponse =
   operations["MovieController_remove"]["responses"]["200"]["content"]["application/json"];
+
+export type Movie = components["schemas"]["MovieDto"];
