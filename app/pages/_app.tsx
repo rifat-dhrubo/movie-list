@@ -1,5 +1,6 @@
 import "styles/globals.css";
 import "styles/nProgress.css";
+import "@smastrom/react-rating/style.css";
 import {
   Hydrate,
   QueryClient,

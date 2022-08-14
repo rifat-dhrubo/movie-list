@@ -62,10 +62,6 @@ export const getAllMovies = (token: string) => {
 };
 
 export const movieSearch = (token: string, query: MovieSearchInput) => {
-  console.log(
-    "🚀 ~ file: movie.service.ts ~ line 65 ~ movieSearch ~ query",
-    query
-  );
   const params = new URLSearchParams();
   if (query.sortBy) {
     params.append("sortBy", query.sortBy);

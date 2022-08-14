@@ -1,3 +1,5 @@
+import { type } from "os";
+
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Menu, MenuButton, MenuItem, MenuList } from "@reach/menu-button";
 import { dehydrate, useQuery } from "@tanstack/react-query";
@@ -18,16 +20,25 @@ import { ROUTES } from "utils/routes";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Movie = ({ accessToken, user }: Props) => {
+const Movie = ({ accessToken }: Props) => {
   const [parent] = useAutoAnimate<HTMLDivElement>();
   const router = useRouter();
   const { sortBy, sortOrder, search, page, size } = router.query;
-  const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = React.useState<string | null>(() =>
+    typeof search === "string" && search != null ? search : null
+  );
   const [debouncedSearchTerm, setDebouncedSearchTerm] = React.useState<
     string | null
   >(null);
   const [, cancel] = useDebounce(
     () => {
+      router.push({
+        pathname: ROUTES.MOVIES,
+        query: {
+          ...router.query,
+          search: searchTerm,
+        },
+      });
       setDebouncedSearchTerm(searchTerm);
     },
     500,
@@ -79,6 +90,9 @@ const Movie = ({ accessToken, user }: Props) => {
           className="input input__base"
           placeholder="Search..."
           onChange={(e) => setSearchTerm(e.target.value)}
+          defaultValue={
+            typeof search === "string" && search != null ? search : undefined
+          }
         />
         <section className="py-6 mt-4 border-t border-gray-200">
           <h2 id="filter-heading" className="sr-only">
@@ -144,7 +158,7 @@ const Movie = ({ accessToken, user }: Props) => {
                   </MenuButton>
                 </div>
 
-                <MenuList className="absolute py-4 mt-2 origin-top-right bg-white rounded-md shadow-2xl -right-32 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <MenuList className="absolute py-4 mt-2 origin-top-right bg-white rounded-md shadow-2xl -right-24 ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="space-y-4">
                     <MenuItem
                       onSelect={() => handleSortOrder("asc")}
@@ -157,7 +171,7 @@ const Movie = ({ accessToken, user }: Props) => {
                         type="radio"
                         className="w-4 h-4 py-2 text-indigo-600 border-gray-300 rounded cursor-pointer focus:ring-indigo-500"
                         onChange={() => handleSortOrder("asc")}
-                        checked={sortOrder === "asc" || sortOrder == null}
+                        checked={sortOrder === "asc"}
                       />
                       <label
                         htmlFor="filter-category-0"
@@ -178,7 +192,7 @@ const Movie = ({ accessToken, user }: Props) => {
                         type="radio"
                         className="w-4 h-4 py-2 text-indigo-600 border-gray-300 rounded cursor-pointer focus:ring-indigo-500"
                         onChange={() => handleSortOrder("desc")}
-                        checked={sortOrder === "desc"}
+                        checked={sortOrder === "desc" || sortOrder == null}
                       />
                       <label
                         htmlFor="filter-category-2"
@@ -204,7 +218,7 @@ const Movie = ({ accessToken, user }: Props) => {
         </div>
 
         {data?.meta != null ? (
-          <div className="flex justify-end w-full mt-8">
+          <div className="fixed flex justify-end w-full mt-8 right-4 bottom-8">
             <Pagination
               totalItems={data?.meta?.total}
               currentPage={data?.meta?.currentPage}

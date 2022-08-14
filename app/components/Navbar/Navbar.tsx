@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import toast from "react-hot-toast";
-import { HiDotsHorizontal, HiOutlineUserCircle, HiUser } from "react-icons/hi";
+import { HiDotsHorizontal, HiOutlineUserCircle } from "react-icons/hi";
 
 import { getSessionInfo, sessionLogout } from "services/auth";
 import { ROUTES } from "utils/routes";
@@ -17,9 +17,10 @@ const Navbar = () => {
         <title>Movie Mania</title>
         <meta name="description" content="A delightful online quiz platform" />
       </Head>
-      <nav className="flex justify-start w-full px-12 py-4 bg-transparent shadow">
+
+      <nav className="flex justify-start w-full px-12 py-4 bg-transparent ">
         <Link passHref href="/">
-          <a className="text-lg font-bold sm:text-xl text-slate-700">
+          <a className="text-lg font-bold sm:text-xl text-secondary">
             Movie Mania
           </a>
         </Link>
@@ -52,23 +53,24 @@ export const SignedInNavbar = () => {
         <title>Movie Mania</title>
         <meta name="description" content="A delightful online movie platform" />
       </Head>
-      <nav className="flex items-center justify-between w-full px-12 py-4 shadow">
+
+      <nav className="flex items-center justify-between w-full px-12 py-4 ">
         <Link passHref href="/">
-          <a className="text-lg font-bold sm:text-xl text-slate-700">
+          <a className="text-lg font-bold sm:text-xl text-secondary text-slate-700">
             Movie Mania
           </a>
         </Link>
         <Menu className="relative ml-6">
           <MenuButton
             type="button"
-            className="flex items-center justify-center w-10 h-10 p-2 -mx-2 text-gray-400 border border-transparent rounded-full bg-slate-700 border-slate-300 hover:text-gray-500 focus:outline-none focus:ring focus:ring-slate-700"
+            className="flex items-center p-2 -mx-2 text-gray-400 border border-transparent rounded-full hover:text-gray-500 focus:outline-none focus:ring focus:ring-slate-700"
             id="menu-0-button"
             aria-expanded="false"
             aria-haspopup="true"
           >
             <span className="sr-only">Open menu</span>
 
-            <HiUser className="w-6 h-6 text-white" />
+            <HiOutlineUserCircle className="w-8 h-8 text-slate-700" />
           </MenuButton>
 
           <MenuList

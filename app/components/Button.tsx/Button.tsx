@@ -16,7 +16,7 @@ interface LinkButtonProps
 }
 
 const baseClass =
-  "focus:outline-none rounded-md font-medium shadow-sm focus:ring focus:ring-offset-2 inline-flex items-center";
+  "focus:outline-none rounded-md font-medium shadow-sm focus:ring focus:ring-offset-2 inline-flex items-center disabled:cursor-not-allowed";
 const primaryVariantClass =
   "text-white bg-purple-600 hover:bg-purple-700 focus:ring-purple-500";
 const secondaryVariantClass =
@@ -74,6 +74,7 @@ export const LinkButton = ({
       "px-3 py-2 text-sm leading-5 font-medium base": size === "base",
       "px-3 py-2 text-base leading-6 font-medium md": size === "md",
       "px-3 py-2 text-base leading-6 font-medium lg": size === "lg",
+      "px-3 py-3 text-lg leading-6 font-medium lg": size === "xl",
     },
 
     className

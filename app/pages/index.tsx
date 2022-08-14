@@ -28,7 +28,7 @@ const Home = () => {
         </p>
         <div className="flex justify-center mt-8 md:justify-start ">
           <Link passHref href="/movies">
-            <LinkButton size="lg">Get Started</LinkButton>
+            <LinkButton size="xl">Get Started</LinkButton>
           </Link>
         </div>
       </main>
