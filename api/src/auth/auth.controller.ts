@@ -6,7 +6,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { BaseResponseDto, ErrorResponseDto } from 'src/common/dto';
 import { UpdateUserResponse } from 'src/user/dto/user.dto';
 
@@ -42,7 +47,7 @@ export class AuthController {
   @ApiBadRequestResponse({
     type: ErrorResponseDto,
   })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     type: BaseResponseDto,
   })
   signUp(@Body() body: SignUpInputDto) {

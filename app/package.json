@@ -8,7 +8,8 @@
 		"start": "next start",
 		"lint": "next lint",
 		"preinstall": "npx only-allow pnpm",
-		"type:check": "tsc --noEmit"
+		"type:check": "tsc --noEmit",
+		"generate": "pnpm dlx openapi-typescript http://localhost:5000/api-json --output generated/server.type.ts"
 	},
 	"browserslist": [
 		">0.3%",

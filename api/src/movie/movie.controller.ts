@@ -44,7 +44,7 @@ export class MovieController {
   }
 
   @Get()
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     schema: {
       allOf: [{ $ref: getSchemaPath(BaseResponseDto) }],
       properties: {

@@ -13,10 +13,6 @@ const fiveHoursInSeconds = 5 * 60 * 60;
  */
 export type AuthProps = {
   token: string;
-  user: {
-    id: string;
-    email: string;
-  };
 };
 
 export const sessionOptions: IronSessionOptions = {
