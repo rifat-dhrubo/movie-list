@@ -39,7 +39,7 @@ const SignIn = () => {
         router.push(redirect);
         return;
       }
-      router.push(ROUTES.MOVIE);
+      router.push(ROUTES.MOVIES);
     },
   });
   const { api } = signInApi();

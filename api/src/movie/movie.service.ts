@@ -45,7 +45,8 @@ export class MovieService {
       this.prisma.movie.count({
         where: {
           title: {
-            search: query.search,
+            contains: query.search,
+            mode: 'insensitive',
           },
           userId,
         },
@@ -55,7 +56,8 @@ export class MovieService {
         skip: query.page * query.size,
         where: {
           title: {
-            search: query.search,
+            contains: query.search,
+            mode: 'insensitive',
           },
           userId,
         },
