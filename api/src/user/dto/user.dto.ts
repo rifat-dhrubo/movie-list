@@ -19,8 +19,10 @@ export class UserDto {
 }
 
 export class UpdateUserInput extends PartialType(
-  OmitType(UserDto, ['hash', 'createdAt', 'updatedAt'] as const),
-) {}
+  OmitType(UserDto, ['hash', 'createdAt', 'updatedAt', 'id'] as const),
+) {
+  userId: number;
+}
 
 export class UpdateUserResponse extends BaseResponseDto {
   content: UserDto;

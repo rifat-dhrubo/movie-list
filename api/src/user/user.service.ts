@@ -12,14 +12,14 @@ import { UpdateUserInput } from './dto/user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async updateUser({ id, email, name }: UpdateUserInput) {
-    if (!id) {
-      throw new BadRequestException('id is required');
+  async updateUser({ userId, email, name }: UpdateUserInput) {
+    if (!userId) {
+      throw new BadRequestException('userId is required');
     }
 
     const oldUser = await this.prisma.user.findUnique({
       where: {
-        id,
+        id: userId,
       },
     });
     if (!oldUser) {
@@ -27,7 +27,7 @@ export class UserService {
     }
     const user = await this.prisma.user.update({
       where: {
-        id,
+        id: userId,
       },
       data: {
         ...{ email, name },
