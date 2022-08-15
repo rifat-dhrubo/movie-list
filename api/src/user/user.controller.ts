@@ -27,7 +27,7 @@ export class UserController {
   @ApiOkResponse({
     type: UpdateUserResponse,
   })
-  updateUser(@Body() body: UpdateUserInput, @GetUser('id') userId: string) {
-    return this.user.updateUser(body);
+  updateUser(@Body() body: UpdateUserInput, @GetUser('id') userId: number) {
+    return this.user.updateUser({ ...body, userId });
   }
 }

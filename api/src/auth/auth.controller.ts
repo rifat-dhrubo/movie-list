@@ -16,7 +16,7 @@ import { BaseResponseDto, ErrorResponseDto } from 'src/common/dto';
 import { UpdateUserResponse } from 'src/user/dto/user.dto';
 
 import { AuthService } from './auth.service';
-import { Public } from './decorator';
+import { GetUser, Public } from './decorator';
 import {
   ChangeUserPasswordInput,
   SignInInput,
@@ -58,7 +58,10 @@ export class AuthController {
   @ApiOkResponse({
     type: UpdateUserResponse,
   })
-  changePassword(@Body() body: ChangeUserPasswordInput) {
-    return this.auth.changePassword(body);
+  changePassword(
+    @Body() body: ChangeUserPasswordInput,
+    @GetUser('id') userId: number,
+  ) {
+    return this.auth.changePassword({ ...body, userId });
   }
 }
