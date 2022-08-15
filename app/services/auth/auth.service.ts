@@ -41,11 +41,19 @@ export const signUpApi = () => {
   };
 };
 
-export const changePasswordApi = () => {
+export const changePasswordApi = (token: string) => {
   return {
     api(data: ChangeUserPasswordInput) {
       return axios
-        .post<ChangePasswordResponse>(`${API_URL}/auth/change-password`, data)
+        .patch<ChangePasswordResponse>(
+          `${API_URL}/auth/change-password`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then(({ data }) => data);
     },
   };

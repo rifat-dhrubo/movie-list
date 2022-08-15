@@ -1,13 +1,17 @@
 import axios from "axios";
 
 import { API_URL } from "environment";
-import { MeResponse, UpdateUserResponse } from "types/user.type";
+import {
+  MeResponse,
+  UpdateUserInput,
+  UpdateUserResponse,
+} from "types/user.type";
 
 export const getLoggedInUser = (token: string) => {
   return {
     api() {
       return axios
-        .get<MeResponse>(`${API_URL}/user`, {
+        .get<MeResponse>(`/api/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -20,9 +24,17 @@ export const getLoggedInUser = (token: string) => {
   };
 };
 
+export const updateSessionUser = () => {
+  return {
+    api(data: UpdateUserResponse["content"]) {
+      return axios.patch(`/api/user`, { user: data }).then(({ data }) => data);
+    },
+  };
+};
+
 export const updateUser = (token: string) => {
   return {
-    api(data: UpdateUserResponse) {
+    api(data: UpdateUserInput) {
       return axios
         .patch<UpdateUserResponse>(`${API_URL}/user`, data, {
           headers: {
