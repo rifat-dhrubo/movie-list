@@ -29,11 +29,11 @@ export const createMovie = (token: string) => {
   };
 };
 
-export const updateMovie = (token: string) => {
+export const updateMovie = (token: string, id: number) => {
   return {
     api(data: UpdateMovieInput) {
       return axios
-        .patch<UpdateMovieResponse>(`${API_URL}/movie`, data, {
+        .patch<UpdateMovieResponse>(`${API_URL}/movie/${id}`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

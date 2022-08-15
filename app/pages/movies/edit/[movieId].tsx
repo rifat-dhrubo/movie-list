@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import AppLayout from "components/Layouts/AppLayout";
+import MovieForm from "components/MovieForm/MovieForm";
 import { withSessionSsr } from "lib/auth/session";
 import { getMovie } from "services/movie";
 import { defaultQueryClient } from "services/queryClient";
@@ -11,13 +12,20 @@ import { ROUTES } from "utils/routes";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const UpdateMovie = ({ accessToken }: Props) => {
+const UpdateMovie = ({ accessToken, user }: Props) => {
   const router = useRouter();
   const { movieId } = router.query;
 
   const { api, getKey } = getMovie(accessToken, movieId as string);
   const { data } = useQuery(getKey(), api);
-  return <div>UpdateMovie</div>;
+  return (
+    <MovieForm
+      accessToken={accessToken}
+      user={user}
+      type="edit"
+      movie={data?.content}
+    />
+  );
 };
 
 export default UpdateMovie;

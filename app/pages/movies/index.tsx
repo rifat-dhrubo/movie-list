@@ -4,11 +4,13 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Menu, MenuButton, MenuItem, MenuList } from "@reach/menu-button";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { InferGetServerSidePropsType } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { HiChevronDown } from "react-icons/hi";
 import { useDebounce } from "react-use";
 
+import { LinkButton } from "components/Button.tsx";
 import AppLayout from "components/Layouts/AppLayout";
 import MovieCard from "components/MovieCard";
 import Pagination from "components/Pagination/Pagination";
@@ -32,14 +34,16 @@ const Movie = ({ accessToken }: Props) => {
   >(null);
   const [, cancel] = useDebounce(
     () => {
-      router.push({
-        pathname: ROUTES.MOVIES,
-        query: {
-          ...router.query,
-          search: searchTerm,
-        },
-      });
-      setDebouncedSearchTerm(searchTerm);
+      if (searchTerm != null) {
+        router.push({
+          pathname: ROUTES.MOVIES,
+          query: {
+            ...router.query,
+            search: searchTerm,
+          },
+        });
+        setDebouncedSearchTerm(searchTerm);
+      }
     },
     500,
     [searchTerm]
@@ -81,19 +85,22 @@ const Movie = ({ accessToken }: Props) => {
   return (
     <div className="bg-white">
       <div className="max-w-2xl px-4 py-16 mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 id="movies-heading" className="sr-only">
-          Movies List
-        </h2>
-
-        <input
-          type="text"
-          className="input input__base"
-          placeholder="Search..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          defaultValue={
-            typeof search === "string" && search != null ? search : undefined
-          }
-        />
+        <div className="flex flex-col">
+          <Link href={ROUTES.MOVIE_CREATE}>
+            <LinkButton className="mb-6 ml-auto cursor-pointer max-w-fit">
+              Add Another
+            </LinkButton>
+          </Link>
+          <input
+            type="text"
+            className="input input__base"
+            placeholder="Search..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            defaultValue={
+              typeof search === "string" && search != null ? search : undefined
+            }
+          />
+        </div>
         <section className="py-6 mt-4 border-t border-gray-200">
           <h2 id="filter-heading" className="sr-only">
             Movies filters

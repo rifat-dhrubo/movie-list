@@ -1,7 +1,7 @@
 import { components, operations } from "generated/server.type";
 
 export type CreateMovieInput =
-  operations["MovieController_create"]["responses"]["201"]["content"]["application/json"];
+  operations["MovieController_create"]["requestBody"]["content"]["application/json"];
 export type UpdateMovieInput =
   operations["MovieController_update"]["requestBody"]["content"]["application/json"];
 export type MovieSearchInput =
