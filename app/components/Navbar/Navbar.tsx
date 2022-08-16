@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import toast from "react-hot-toast";
-import { HiDotsHorizontal, HiOutlineUserCircle } from "react-icons/hi";
+import { HiOutlineUserCircle } from "react-icons/hi";
 
 import { getSessionInfo, sessionLogout } from "services/auth";
 import { ROUTES } from "utils/routes";
@@ -80,7 +80,7 @@ export const SignedInNavbar = () => {
             aria-labelledby="menu-0-button"
             tabIndex={-1}
           >
-            {/* <div className="py-1" role="none">
+            <div className="py-1" role="none">
               <MenuItem
                 as="button"
                 role="menuitem"
@@ -91,7 +91,7 @@ export const SignedInNavbar = () => {
               >
                 Profile
               </MenuItem>
-            </div> */}
+            </div>
             <div className="py-1" role="none">
               <MenuItem
                 as="button"

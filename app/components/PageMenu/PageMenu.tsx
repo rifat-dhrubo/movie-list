@@ -13,20 +13,20 @@ const PageMenu: React.FC<Props> = ({ handlePageSize }: Props) => {
     <Menu className="relative z-10 inline-block text-left">
       <MenuButton
         as="button"
-        className="inline-flex bg-white px-4 py-2 border-slate-200 rounded shadow justify-center text-sm font-medium text-gray-700 group hover:text-gray-900"
+        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded shadow border-slate-200 group hover:text-gray-900"
       >
         Page size
         <HiChevronDown className="flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500" />
       </MenuButton>
 
-      <MenuList className="absolute  -left-20 z-10 w-40 mt-2 origin-top-left bg-white rounded-md shadow-2xl ring-1 -top-60 ring-black ring-opacity-5 focus:outline-none slide-down">
-        <div className="py-1 flex flex-col-reverse" role="none">
+      <MenuList className="absolute z-10 w-40 mt-2 origin-top-left bg-white rounded-md shadow-2xl -left-20 ring-1 -top-60 ring-black ring-opacity-5 focus:outline-none slide-up">
+        <div className="flex flex-col-reverse py-1" role="none">
           <MenuItem
             as="button"
             onSelect={() => handlePageSize(1)}
             className="block w-full px-4 py-2 text-sm font-medium text-left text-gray-900 cursor-pointer"
           >
-            5
+            1
           </MenuItem>
 
           <MenuItem

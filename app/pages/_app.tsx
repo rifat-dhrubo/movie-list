@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         {getLayout(<Component {...pageProps} />)}
         <Toaster />
       </Hydrate>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );
 }

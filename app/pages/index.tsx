@@ -1,11 +1,8 @@
-import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { HiArrowRight } from "react-icons/hi";
 
 import { LinkButton } from "components/Button.tsx";
 import AppLayout from "components/Layouts/AppLayout";
-import Navbar, { SignedInNavbar } from "components/Navbar/Navbar";
 
 const Home = () => {
   return (
@@ -14,7 +11,8 @@ const Home = () => {
         <Image
           src="/hero.svg"
           layout="fill"
-          alt="An open laptop showing a humanoid blob with paper on both hand. The background has two rectangle with question mark in center.The laptop has a postit stuck to it at them top left op the screen"
+          alt="Two women sitting with a laptop between them"
+          priority
         />
       </div>
       <main className="px-8 mt-16 md:order-1 md:px-0">

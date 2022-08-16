@@ -17,10 +17,26 @@
 		transform: translateY(0);
 	}
 }
+@keyframes slide-up {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
 @media (prefers-reduced-motion: no-preference) {
 	.slide-down[data-reach-menu-list],
 	.slide-down[data-reach-menu-items] {
 		animation: slide-down 0.2s ease;
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	.slide-up[data-reach-menu-list],
+	.slide-up[data-reach-menu-items] {
+		animation: slide-up 0.2s ease;
 	}
 }
 
