@@ -228,9 +228,12 @@ export const getServerSideProps = withSessionSsr(
     const { api, getKey } = movieSearch(accessToken, {
       sortBy: sortBy as MovieSearchInput["sortBy"],
       sortOrder: sortOrder as MovieSearchInput["sortOrder"],
-      search: search != null ? String(search) : undefined,
-      page: page != null ? Number(page) : undefined,
-      size: size != null ? Number(size) : undefined,
+      page: page as MovieSearchInput["page"],
+      size: size as MovieSearchInput["size"],
+      search:
+        search != null && typeof search === "string"
+          ? search
+          : (undefined as MovieSearchInput["search"]),
     });
     try {
       await queryClient.prefetchQuery(getKey(), api);
