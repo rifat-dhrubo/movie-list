@@ -13,7 +13,10 @@ import { useDebounce } from "react-use";
 import { LinkButton } from "components/Button.tsx";
 import AppLayout from "components/Layouts/AppLayout";
 import MovieCard from "components/MovieCard";
+import PageMenu from "components/PageMenu";
 import Pagination from "components/Pagination/Pagination";
+import SortByMenu from "components/SortByMenu";
+import SortOrderMenu from "components/SortOrderMenu/SortOrderMenu";
 import { withSessionSsr } from "lib/auth/session";
 import { movieSearch } from "services/movie";
 import { defaultQueryClient } from "services/queryClient";
@@ -51,6 +54,8 @@ const Movie = ({ accessToken }: Props) => {
   const { api, getKey } = movieSearch(accessToken, {
     sortBy: sortBy as MovieSearchInput["sortBy"],
     sortOrder: sortOrder as MovieSearchInput["sortOrder"],
+    page: page as MovieSearchInput["page"],
+    size: size as MovieSearchInput["size"],
     search:
       debouncedSearchTerm != null
         ? debouncedSearchTerm
@@ -74,17 +79,38 @@ const Movie = ({ accessToken }: Props) => {
     router.push(router);
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: MovieSearchInput["page"]) => {
+    if (page == null) return;
     router.query = {
       ...router.query,
       page: page.toString(),
     };
     router.push(router);
   };
+  const handleSizeChange = (size: MovieSearchInput["size"]) => {
+    if (size == null) return;
+    router.query = {
+      ...router.query,
+      size: size.toString(),
+    };
+    router.push(router);
+  };
+
+  React.useEffect(() => {
+    if (page != null && Number(page) >= 1 && data?.content?.length === 0) {
+      router.push({
+        pathname: ROUTES.MOVIES,
+        query: {
+          ...router.query,
+          page: 0,
+        },
+      });
+    }
+  }, [data?.content?.length, page, router]);
 
   return (
     <div className="bg-white">
-      <div className="max-w-2xl px-4 py-16 mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="max-w-2xl px-4 py-4 mx-auto sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="flex flex-col">
           <Link href={ROUTES.MOVIE_CREATE}>
             <LinkButton className="mb-6 ml-auto cursor-pointer max-w-fit">
@@ -105,113 +131,13 @@ const Movie = ({ accessToken }: Props) => {
           <h2 id="filter-heading" className="sr-only">
             Movies filters
           </h2>
-          <div className="flex items-center justify-between">
-            <Menu className="relative z-10 inline-block text-left">
-              <MenuButton
-                as="button"
-                className="inline-flex justify-center text-sm font-medium text-gray-700 group hover:text-gray-900"
-              >
-                Sort
-                <HiChevronDown className="flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500" />
-              </MenuButton>
+          <div className="flex items-center justify-start gap-8">
+            <SortByMenu handleSortBy={handleSortBy} />
 
-              <MenuList className="absolute left-0 z-10 w-40 mt-2 origin-top-left bg-white rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1" role="none">
-                  <MenuItem
-                    as="button"
-                    onSelect={() => handleSortBy("title")}
-                    className="block w-full px-4 py-2 text-sm font-medium text-left text-gray-900 cursor-pointer"
-                  >
-                    Title
-                  </MenuItem>
-
-                  <MenuItem
-                    as="button"
-                    onSelect={() => handleSortBy("rating")}
-                    className="block w-full px-4 py-2 text-sm font-medium text-left text-gray-900 cursor-pointer"
-                  >
-                    Rating
-                  </MenuItem>
-
-                  <MenuItem
-                    as="button"
-                    onSelect={() => handleSortBy("createdAt")}
-                    className="block w-full px-4 py-2 text-sm font-medium text-left text-gray-900 cursor-pointer"
-                  >
-                    Created at
-                  </MenuItem>
-
-                  <MenuItem
-                    as="button"
-                    onSelect={() => handleSortBy("updatedAt")}
-                    className="block w-full px-4 py-2 text-sm font-medium text-left text-gray-900 cursor-pointer"
-                    role="menuitem"
-                    tabIndex={-1}
-                    id="mobile-menu-item-2"
-                  >
-                    Updated at
-                  </MenuItem>
-                </div>
-              </MenuList>
-            </Menu>
-
-            <Menu className="flex items-baseline space-x-8">
-              <div className="relative z-10 inline-block text-left">
-                <div>
-                  <MenuButton className="inline-flex items-center justify-center text-sm font-medium text-gray-700 group hover:text-gray-900">
-                    <span>Sort Order</span>
-
-                    <HiChevronDown className="flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500" />
-                  </MenuButton>
-                </div>
-
-                <MenuList className="absolute py-4 mt-2 origin-top-right bg-white rounded-md shadow-2xl -right-24 ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="space-y-4">
-                    <MenuItem
-                      onSelect={() => handleSortOrder("asc")}
-                      className="flex items-center px-3 py-2 cursor-pointer"
-                    >
-                      <input
-                        id="filter-category-0"
-                        name="sortOrder"
-                        value="asc"
-                        type="radio"
-                        className="w-4 h-4 py-2 text-indigo-600 border-gray-300 rounded cursor-pointer focus:ring-indigo-500"
-                        onChange={() => handleSortOrder("asc")}
-                        checked={sortOrder === "asc"}
-                      />
-                      <label
-                        htmlFor="filter-category-0"
-                        className="pr-6 ml-3 text-sm font-medium text-gray-900 cursor-pointer whitespace-nowrap"
-                      >
-                        Ascending
-                      </label>
-                    </MenuItem>
-
-                    <MenuItem
-                      onSelect={() => handleSortOrder("desc")}
-                      className="flex items-center px-3 py-2 cursor-pointer"
-                    >
-                      <input
-                        id="filter-category-2"
-                        name="sortOrder"
-                        value="desc"
-                        type="radio"
-                        className="w-4 h-4 py-2 text-indigo-600 border-gray-300 rounded cursor-pointer focus:ring-indigo-500"
-                        onChange={() => handleSortOrder("desc")}
-                        checked={sortOrder === "desc" || sortOrder == null}
-                      />
-                      <label
-                        htmlFor="filter-category-2"
-                        className="pr-6 ml-3 text-sm font-medium text-gray-900 cursor-pointer whitespace-nowrap"
-                      >
-                        Descending
-                      </label>
-                    </MenuItem>
-                  </div>
-                </MenuList>
-              </div>
-            </Menu>
+            <SortOrderMenu
+              sortOrder={sortOrder as any}
+              handleSortOrder={handleSortOrder}
+            />
           </div>
         </section>
 
@@ -225,7 +151,8 @@ const Movie = ({ accessToken }: Props) => {
         </div>
 
         {data?.meta != null ? (
-          <div className="fixed flex justify-end w-full mt-8 right-4 bottom-8">
+          <div className="fixed flex flex-wrap pl-8 justify-end gap-4 items-center w-full mt-8 right-4 bottom-8">
+            <PageMenu handlePageSize={handleSizeChange} />
             <Pagination
               totalItems={data?.meta?.total}
               currentPage={data?.meta?.currentPage}

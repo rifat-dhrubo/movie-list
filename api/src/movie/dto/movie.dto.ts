@@ -1,4 +1,6 @@
+import { ParseIntPipe } from '@nestjs/common';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import {
   IsEnum,
   IsInt,
@@ -11,7 +13,6 @@ import {
   MinLength,
 } from 'class-validator';
 import { UserDto } from 'src/user/dto/user.dto';
-
 export class MovieDto {
   @IsInt()
   @Min(1)
@@ -56,10 +57,12 @@ export class MoviePaginationEntities {
 
   @IsInt()
   @IsOptional()
+  @Transform((val) => Number.parseInt(val.value))
   page?: number = 0;
 
   @IsInt()
   @IsOptional()
+  @Transform((val) => Number.parseInt(val.value))
   size?: number = 10;
 
   @IsEnum(['createdAt', 'updatedAt', 'title', 'rating'])
