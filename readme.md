@@ -89,3 +89,6 @@ pnpm dev
 Also please make sure the API_URL is set to the correct url for the backend in the .env.development folder
 
  You can interact with the deployed app  [**HERE**](http://movie-list-phi.vercel.app)
+
+Email: admin@email.com
+Password: 987654321
