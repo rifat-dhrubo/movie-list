@@ -5,7 +5,7 @@
 This repo contains the code for the both the frontend and backend of the application.
 The api is hosted on [railway](https://railway.app) and the frontend is hosted on [Vercel](https://vercel.com).
 
-The backend is written in [Node](https://nodejs.org/) with [TypeScript](https://www.typescriptlang.org/) and [NestJS](https://nestjs.com/) as the framework. The database
+The backend is written in [Node](https://nodejs.org/) and [TypeScript](https://www.typescriptlang.org/) with [NestJS](https://nestjs.com/) as the framework. The database
 is [Postgresql](https://www.postgresql.org/) You can find the code for the backend on the api folder.
 
 The frontend is written in [React](https://reactjs.org/) with [NextJS](https://nextjs.org/) as the framework and [Tailwindcss](https://tailwindcss.com) as the styling solution. You can find the code for the frontend on the app folder.
@@ -36,20 +36,20 @@ The api folder contains an example for the environment variable file. One is the
 
 ### Usage
 
-After installing the backend, you need to migrate the database and generate prisma.
+After installing the backend, you need to migrate the database and generate prisma client.
 To migrate the database locally run the following command in **api** folder:
 
 ```bash
-pnpm  migrate:dev
+pnpm migrate:dev
 ```
 
-To generate prisma locally run the following command in **api** folder:
+To generate prisma client locally run the following command in **api** folder:
 
 ```bash
-pnpm  generate
+pnpm generate
 ```
 
-Optionally you can use the prisma studio to view the edit the database manually
+Optionally you can use the prisma studio to view or edit the database manually
 just run the following commmand in **api** folder:
 
 ```bash
@@ -62,7 +62,7 @@ After that you can start the server by running the following command in **api** 
 pnpm start:dev
 ```
 
- You can interact with the deployed server  [**HERE**](https://movie-list-production.up.railway.app)
+You can interact with the deployed server  [**HERE**](https://movie-list-production.up.railway.app)
 
 The swagger documentation for the backend is available in the [**HERE**](https://movie-list-production.up.railway.app/api)
 
